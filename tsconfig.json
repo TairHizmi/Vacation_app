@@ -1,0 +1,38 @@
+
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "types": ["node"],
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "server.ts",
+    "controllers/**/*.ts",
+    "routes/**/*.ts",
+    "services/**/*.ts",
+    "middlewares/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "frontend",
+    "node_modules"
+  ]
+}

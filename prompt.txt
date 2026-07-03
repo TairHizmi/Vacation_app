@@ -1,0 +1,69 @@
+You are an expert Full Stack Developer. I need you to build a complete Vacation Management web application based on the following specifications. 
+
+### Tech Stack
+- Backend: Node.js with Express, written in plain JavaScript.
+- Frontend: React with TypeScript (Vite template preferred), using .tsx for components.
+- Database: MySQL (using mysql2 package).
+
+### Project Structure Requirements
+1. Backend:
+   - All API routes MUST be separated into a dedicated routes folder/file (e.g., `routes/vacationRoutes.js`, `routes/authRoutes.js`, `routes/mcpRoutes.js`).
+   - Create a clean controller/service layer architecture.
+   - Images must be uploaded and stored in a static directory on the server (e.g., `public/uploads/`), storing only the filename in the database.
+   - Provide a `.env` file template with clear environment variables (e.g., DB_HOST, DB_USER, DB_PASSWORD, JWT_SECRET, PORT) so I can fill in my credentials.
+2. Frontend:
+   - Create a dedicated `components/` folder for all reusable UI components. All component files must use the `.tsx` extension.
+   - UI/UX Styling: All styling must be written exclusively in a single `src/App.css` file. Keep the design sleek, modern, and clean. 
+   - Integrate components or logic from the existing `skills` folder to enhance the overall UI/UX experience.
+
+---
+
+### Core Features & Specs
+
+#### 1. Database Entities
+- Users: ID (PK), First Name, Last Name, Email (unique), Password, Role (User / Admin).
+- Vacations: ID (PK), Destination, Description, Start Date, End Date, Price, Cover Image Filename.
+- Likes: Many-to-Many junction table linking Users and Vacations.
+
+#### 2. Authentication & Authorization
+- Registration Page: All fields required. Email validation required. Minimum password length: 4 characters. Check if email is already taken. Redirect to Vacations page upon completion.
+- Login Page: All fields required. Minimum password length: 4 characters. Clear error messages for invalid credentials. Redirect to Vacations page upon completion.
+- Protected Routes: Only logged-in users can access core pages. Unauthorized access redirects to Login.
+
+#### 3. User Features (Role: User)
+- Vacations Dashboard: Display vacations as responsive Cards (NOT tables). Each card shows all vacation details, total Likes count, and whether the current user liked it.
+- Sorting: Automatically sort vacations by Start Date in ascending order.
+- Pagination: Strictly 9 vacation cards per page.
+- Actions: Toggle Like/Unlike on cards.
+- Filters: 4 required filter buttons:
+  1. Show only vacations liked by the user.
+  2. Show currently active vacations (started and hasn't ended yet).
+  3. Show future vacations (haven't started yet).
+  4. Reset filters (show all vacations).
+
+#### 4. AI & Advanced Features (Accessible to Registered Users)
+- AI Recommendation Page: A text input for a destination. Clicking "Get Recommendation" fetches and displays a structured travel itinerary/recommendation on the page.
+- MCP Server Communication Page: An interface with a textarea to ask questions about the database data (e.g., "How many active vacations are there right now?", "What is the average price?", "What are the future vacations in Europe?"). This must communicate with an MCP server built on the backend.
+
+#### 5. Admin Features (Role: Admin)
+- Admin Dashboard: Same grid layout but without Like options. Instead, each card has "Edit" and "Delete" buttons.
+- Add Vacation Page: All fields required. Prevent negative prices or prices > 10,000. Prevent end dates earlier than start dates. Prevent past dates.
+- Edit Vacation Page: Pre-filled fields. All fields required except the cover image (display current image, allow changing it, but don't force a re-upload). Allows past dates (since historical data can be edited).
+- Delete Vacation: Prompt a confirmation modal/dialogue before deleting.
+- Vacations Report Page: Display a chart showing vacation destinations on the X-axis and total Likes on the Y-axis. (Use any standard chart library like chart.js or recharts).
+- Download CSV: An exclusive Admin button to generate and download a `Vacation Likes.csv` file structured as: `Destination, Likes`.
+
+#### 6. Public Page
+- About Page: Accessible to unregistered users. Displays information about the system and the developer's details.
+
+#### 7. Navigation & Header
+- A dynamic responsive navbar. Unregistered users only see Login/Register. Registered users see their full name, dynamic links based on their role, and a Logout button.
+
+---
+
+### Step-by-Step Implementation Plan
+Please generate the code step-by-step:
+1. First, provide the Database schemas and the Backend `.env` layout.
+2. Next, generate the Backend Server (`server.js`, routes, controllers, and the MCP server setup).
+3. Then, generate the Frontend setup (The unified `App.css`, context/state management for Auth, and components).
+4. Ensure all code is modular, robust, and clean.
