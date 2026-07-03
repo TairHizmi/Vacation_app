@@ -27,6 +27,15 @@ const ReportsPage = () => {
     }
   }, [isAdmin])
 
+  const sortedReport = useMemo(() => {
+    return [...reportData].sort((a, b) => b.likes - a.likes)
+  }, [reportData])
+
+  const maxLikes = useMemo(() => {
+    if (reportData.length === 0) return 1
+    return Math.max(...reportData.map((row) => row.likes), 1)
+  }, [reportData])
+
   const csvContent = useMemo(() => {
     const header = 'Destination,Likes'
     const rows = reportData.map((row) => `${row.destination.replace(/\n/g, ' ')},${row.likes}`)
@@ -58,16 +67,16 @@ const ReportsPage = () => {
   }
 
   return (
-    <section className="stacked-section">
+    <section className="stacked-section reports-page">
       <article className="hero-card">
         <div>
           <p className="eyebrow">Reports</p>
           <h2>Visualize destination popularity and likes at a glance.</h2>
-          <p className="muted-text">A chart-ready view is ready for the admin dashboard and CSV export workflow.</p>
+          <p className="muted-text">A chart-ready view is available only for admins. The X axis shows each vacation destination and the Y axis shows the likes count.</p>
         </div>
       </article>
 
-      <article className="info-card">
+      <article className="info-card report-card">
         <div className="report-actions">
           <button className="primary-button" type="button" onClick={handleDownloadCsv} disabled={loading || reportData.length === 0}>
             Download CSV
@@ -76,22 +85,40 @@ const ReportsPage = () => {
 
         {loading ? (
           <div className="loading-state">Loading report...</div>
+        ) : reportData.length === 0 ? (
+          <div className="loading-state">No report data available.</div>
         ) : (
-          <div className="chart-card">
-            <div className="chart-header-row">
-              <span>Destination</span>
-              <span>Likes</span>
+          <div className="report-chart">
+            <div className="report-chart-title">
+              <h3>Vacation Report</h3>
             </div>
-            <div className="chart-rows">
-              {reportData.map((row) => (
-                <div key={row.destination} className="chart-row">
-                  <span className="chart-label">{row.destination}</span>
-                  <div className="chart-bar" style={{ width: `${Math.min(100, row.likes * 8)}%` }}>
-                    {row.likes}
-                  </div>
-                </div>
-              ))}
-              {reportData.length === 0 && <div className="muted-text">No report data available.</div>}
+            <div className="report-chart-body">
+              <div className="y-axis">
+                {Array.from({ length: Math.min(maxLikes, 7) + 1 }, (_, index) => {
+                  const value = Math.round(maxLikes - (maxLikes / Math.min(maxLikes, 7)) * index)
+                  return (
+                    <span key={value} className="y-axis-label">
+                      {value}
+                    </span>
+                  )
+                })}
+              </div>
+
+              <div className="chart-columns">
+                {sortedReport.map((row) => {
+                  const height = Math.max(12, Math.round((row.likes / maxLikes) * 100))
+                  return (
+                    <div key={row.destination} className="chart-column">
+                      <div className="column-bar-wrapper">
+                        <div className="column-bar" style={{ height: `${height}%` }}>
+                          <span className="bar-value">{row.likes}</span>
+                        </div>
+                      </div>
+                      <span className="chart-column-label">{row.destination}</span>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         )}
